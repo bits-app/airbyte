@@ -12,6 +12,7 @@ from airbyte_cdk.sources import AbstractSource
 from airbyte_cdk.sources.streams import Stream
 from airbyte_cdk.sources.streams.http.auth import TokenAuthenticator
 from source_stripe.streams import (
+    Accounts,
     BalanceTransactions,
     BankAccounts,
     Charges,
@@ -52,6 +53,7 @@ class SourceStripe(AbstractSource):
         args = {"authenticator": authenticator, "account_id": config["account_id"], "start_date": start_date}
         incremental_args = {**args, "lookback_window_days": config.get("lookback_window_days")}
         return [
+            Accounts(**incremental_args),
             BalanceTransactions(**incremental_args),
             BankAccounts(**args),
             Charges(**incremental_args),
